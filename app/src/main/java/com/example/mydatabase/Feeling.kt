@@ -6,9 +6,9 @@ import java.sql.Date
 
 // If no table name will same as class name
 @Entity(tableName = "feeling")
-class Feeling (
+data class Feeling (
     @PrimaryKey (autoGenerate = true) val id: Int,
     val mode: Int,
     val remarks: String,
-    val created_at: Date
+    val created_at: Long = System.currentTimeMillis()
 )

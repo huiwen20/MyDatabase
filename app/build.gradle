@@ -4,10 +4,14 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+// from android room in kotlin
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 28
     buildToolsVersion "29.0.2"
     defaultConfig {
+        vectorDrawables.useSupportLibrary = true
         applicationId "com.example.mydatabase"
         minSdkVersion 15
         targetSdkVersion 28
@@ -21,25 +25,38 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    // from android room in kotlin
+    packagingOptions {
+        exclude 'META-INF/atomicfu.kotlin_module'
+    }
 }
 
 dependencies {
-    def room_version = "2.2.2"
+    // from android room in kotlin
+    // Room components
+    implementation "androidx.room:room-runtime:$rootProject.roomVersion"
+    implementation "androidx.room:room-ktx:$rootProject.roomVersion"
+    kapt "androidx.room:room-compiler:$rootProject.roomVersion"
+    androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
 
-    implementation "androidx.room:room-runtime:$room_version"
-    annotationProcessor "androidx.room:room-compiler:$room_version" // For Kotlin use kapt instead of annotationProcessor
+    // Lifecycle components
+    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.archLifecycleVersion"
+    kapt "androidx.lifecycle:lifecycle-compiler:$rootProject.archLifecycleVersion"
+    androidTestImplementation "androidx.arch.core:core-testing:$rootProject.androidxArchVersion"
 
-    // optional - Kotlin Extensions and Coroutines support for Room
-    implementation "androidx.room:room-ktx:$room_version"
+    // ViewModel Kotlin support
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.archLifecycleVersion"
 
-    // optional - RxJava support for Room
-    implementation "androidx.room:room-rxjava2:$room_version"
+    // Coroutines
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutines"
 
-    // optional - Guava support for Room, including Optional and ListenableFuture
-    implementation "androidx.room:room-guava:$room_version"
+    // UI
+    implementation "com.google.android.material:material:$rootProject.materialVersion"
 
-    // Test helpers
-    testImplementation "androidx.room:room-testing:$room_version"
+    // Testing
+    androidTestImplementation "androidx.arch.core:core-testing:$rootProject.coreTestingVersion"
+
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

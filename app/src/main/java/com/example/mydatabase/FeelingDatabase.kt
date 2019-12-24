@@ -5,7 +5,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = arrayOf(Feeling::class), version = 1)
+// @Database(entities = arrayOf(Feeling::class), version = 1)
+@Database(entities = [Feeling::class], version = 1)
 abstract class FeelingDatabase : RoomDatabase() {
     //Instance of DAO (to call function)
     abstract fun feelingDao() : FeelingDao
@@ -32,7 +33,6 @@ abstract class FeelingDatabase : RoomDatabase() {
                 ).build()
 
                 INTANCE = instance
-
                 return instance
             }
         }
